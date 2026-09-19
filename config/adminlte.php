@@ -767,6 +767,17 @@ return [
             'topnav_right' => true,
         ],
         [
+        'text' => 'Dashboard',
+        'url'  => 'home',
+        'icon' => 'fas fa-fw fa-home',
+    ],
+
+    [
+        'text' => 'Users',
+        'url'  => 'users',
+        'icon' => 'fas fa-users',
+    ],
+        [
             'type' => 'darkmode-widget',
             'topnav_right' => true,
         ],
