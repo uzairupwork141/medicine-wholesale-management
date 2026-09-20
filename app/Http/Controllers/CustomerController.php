@@ -9,7 +9,7 @@ class CustomerController extends Controller
 {
     public function index()
     {
-        $customers = Customer::all();
+        $customers = Customer::where('deleted', 0)->get();
 
         return view('customers.index', compact('customers'));
     }
@@ -34,7 +34,7 @@ class CustomerController extends Controller
         ]);
 
         $validated['is_active'] = $request->has('is_active');
-
+        $validated['deleted'] = 0;
         Customer::create($validated);
 
         return redirect('/customers');
@@ -42,11 +42,19 @@ class CustomerController extends Controller
 
     public function edit(Customer $customer)
     {
+        if ($customer->deleted) {
+            abort(404);
+        }
+
         return view('customers.edit', compact('customer'));
     }
 
     public function update(Request $request, Customer $customer)
     {
+        if ($customer->deleted) {
+            abort(404);
+        }
+
         $validated = $request->validate([
             'customer_code' => 'required|max:50|unique:customers,customer_code,' . $customer->id,
             'business_name' => 'required|max:100',
@@ -65,10 +73,18 @@ class CustomerController extends Controller
 
         return redirect('/customers');
     }
+
     public function destroy(Customer $customer)
     {
-        $customer->delete();
+        if ($customer->deleted) {
+            return redirect('/customers');
+        }
+
+        $customer->update([
+            'deleted' => 1,
+        ]);
 
         return redirect('/customers');
     }
+    
 }
