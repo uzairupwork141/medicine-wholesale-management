@@ -17,11 +17,13 @@ class Customer extends Model
         'credit_limit',
         'opening_balance',
         'is_active',
+        'deleted',
     ];
 
     protected $casts = [
         'credit_limit' => 'decimal:2',
         'opening_balance' => 'decimal:2',
         'is_active' => 'boolean',
+        'deleted' => 'boolean',
     ];
 }
