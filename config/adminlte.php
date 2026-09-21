@@ -778,6 +778,11 @@ return [
         'icon' => 'fas fa-users',
     ],
         [
+            'text' => 'Customers',
+            'url' => '/customers',
+            'icon' => 'bi bi-people',
+        ],
+        [
             'type' => 'darkmode-widget',
             'topnav_right' => true,
         ],
