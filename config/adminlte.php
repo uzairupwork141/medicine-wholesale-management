@@ -782,6 +782,23 @@ return [
             'url' => '/customers',
             'icon' => 'bi bi-people',
         ],
+       [
+                'text' => 'Categories',
+                'url'  => 'categories',
+                'icon' => 'bi bi-tags',
+            ],
+
+            [
+                'text' => 'Companies',
+                'url'  => 'manufacturers',
+                'icon' => 'bi bi-building',
+            ],
+
+            [
+                'text' => 'Medicines',
+                'url'  => 'medicines',
+                'icon' => 'bi bi-pills',
+            ],
         [
             'type' => 'darkmode-widget',
             'topnav_right' => true,
