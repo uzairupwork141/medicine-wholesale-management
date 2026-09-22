@@ -767,38 +767,43 @@ return [
             'topnav_right' => true,
         ],
         [
-        'text' => 'Dashboard',
-        'url'  => 'home',
-        'icon' => 'fas fa-fw fa-home',
-    ],
+            'text' => 'Dashboard',
+            'url'  => 'home',
+            'icon' => 'fas fa-fw fa-home',
+        ],
 
-    [
-        'text' => 'Users',
-        'url'  => 'users',
-        'icon' => 'fas fa-users',
-    ],
+        [
+            'text' => 'Users',
+            'url'  => 'users',
+            'icon' => 'fas fa-users',
+        ],
         [
             'text' => 'Customers',
             'url' => '/customers',
             'icon' => 'bi bi-people',
         ],
-       [
-                'text' => 'Categories',
-                'url'  => 'categories',
-                'icon' => 'bi bi-tags',
-            ],
+        [
+            'text' => 'Categories',
+            'url'  => 'categories',
+            'icon' => 'bi bi-tags',
+        ],
 
-            [
-                'text' => 'Companies',
-                'url'  => 'manufacturers',
-                'icon' => 'bi bi-building',
-            ],
+        [
+            'text' => 'Companies',
+            'url'  => 'manufacturers',
+            'icon' => 'bi bi-building',
+        ],
 
-            [
-                'text' => 'Medicines',
-                'url'  => 'medicines',
-                'icon' => 'bi bi-pills',
-            ],
+        [
+            'text' => 'Medicines',
+            'url'  => 'medicines',
+            'icon' => 'bi bi-pills',
+        ],
+        [
+            'text' => 'Batches',
+            'url'  => '/batches',
+            'icon' => 'bi bi-inventory',
+        ],
         [
             'type' => 'darkmode-widget',
             'topnav_right' => true,
