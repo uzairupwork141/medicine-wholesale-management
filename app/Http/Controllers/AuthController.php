@@ -19,14 +19,20 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        if (Auth::attempt($credentials)) {
-
+        // Only active accounts are allowed to create a session.
+        if (Auth::attempt([
+            'email' => $credentials['email'],
+            'password' => $credentials['password'],
+            'is_active' => true,
+        ])) {
             $request->session()->regenerate();
 
-            return redirect()->route('dashboard');
+            return redirect()->intended(route('dashboard'));
         }
 
-        return back()->with('error', 'Invalid email or password.');
+        return back()
+            ->withInput($request->only('email'))
+            ->with('error', 'Invalid credentials or your account is inactive.');
     }
 
     public function logout(Request $request)
