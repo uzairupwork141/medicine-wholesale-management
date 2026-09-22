@@ -6,6 +6,10 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ManufacturerController;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\BatchController;
+
+
+
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 Route::get('/', function () {
@@ -60,6 +64,13 @@ Route::get('/medicines/{id}/edit', [MedicineController::class, 'edit'])->name('m
 Route::put('/medicines/{id}', [MedicineController::class, 'update'])->name('medicines.update');
 Route::delete('/medicines/{id}', [MedicineController::class, 'destroy'])->name('medicines.destroy');
 
+// batches
+Route::get('/batches', [BatchController::class, 'index'])->name('batches.index');
+Route::get('/batches/create', [BatchController::class, 'create'])->name('batches.create');
+Route::post('/batches', [BatchController::class, 'store'])->name('batches.store');
+Route::get('/batches/{batch}/edit', [BatchController::class, 'edit'])->name('batches.edit');
+Route::put('/batches/{batch}', [BatchController::class, 'update'])->name('batches.update');
+Route::delete('/batches/{batch}', [BatchController::class, 'destroy']) ->name('batches.destroy');
 // login 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
