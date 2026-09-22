@@ -6,9 +6,11 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ManufacturerController;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 Route::get('/', function () {
     return view('dashboard');
-});
+})->name('dashboard');
 //user routs
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
 Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
@@ -58,3 +60,17 @@ Route::get('/medicines/{id}/edit', [MedicineController::class, 'edit'])->name('m
 Route::put('/medicines/{id}', [MedicineController::class, 'update'])->name('medicines.update');
 Route::delete('/medicines/{id}', [MedicineController::class, 'destroy'])->name('medicines.destroy');
 
+// login 
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+
+// profile 
+// Profile
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+// password
+Route::get('/profile/password', [ProfileController::class, 'password'])->name('profile.password');
+Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
