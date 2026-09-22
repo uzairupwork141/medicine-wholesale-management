@@ -10,9 +10,11 @@ use App\Http\Controllers\BatchController;
 
 
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 Route::get('/', function () {
     return view('dashboard');
-});
+})->name('dashboard');
 //user routs
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
 Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
@@ -69,3 +71,17 @@ Route::post('/batches', [BatchController::class, 'store'])->name('batches.store'
 Route::get('/batches/{batch}/edit', [BatchController::class, 'edit'])->name('batches.edit');
 Route::put('/batches/{batch}', [BatchController::class, 'update'])->name('batches.update');
 Route::delete('/batches/{batch}', [BatchController::class, 'destroy']) ->name('batches.destroy');
+// login 
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+
+// profile 
+// Profile
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+// password
+Route::get('/profile/password', [ProfileController::class, 'password'])->name('profile.password');
+Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
