@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
 
 class Medicine extends Model
@@ -32,4 +32,8 @@ class Medicine extends Model
     {
         return $this->belongsTo(Manufacturer::class);
     }
+    public function batches(): HasMany
+{
+    return $this->hasMany(Batch::class);
+}
 }
