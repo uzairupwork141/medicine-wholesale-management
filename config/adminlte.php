@@ -189,8 +189,8 @@ return [
     |
     */
 
-    'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'use_route_url' => true,
+    'dashboard_url' => 'dashboard',
     'logout_url' => 'logout',
 
     // The HTTP method spoofed on the logout form. Set it to 'GET' when your
@@ -769,13 +769,14 @@ return [
         [
         'text' => 'Dashboard',
         'url'  => 'dashboard',
-        'icon' => 'fas fa-fw fa-home',
+        'icon' => 'bi bi-speedometer2',
     ],
 
         [
             'text' => 'Users',
             'url'  => 'users',
-            'icon' => 'fas fa-users',
+            'icon' => 'bi bi-people',
+            'can'  => 'admin',
         ],
         [
             'text' => 'Customers',
@@ -786,23 +787,27 @@ return [
             'text' => 'Categories',
             'url'  => 'categories',
             'icon' => 'bi bi-tags',
+            'can'  => 'admin',
         ],
 
         [
             'text' => 'Companies',
             'url'  => 'manufacturers',
             'icon' => 'bi bi-building',
+            'can'  => 'admin',
         ],
 
         [
             'text' => 'Medicines',
             'url'  => 'medicines',
-            'icon' => 'bi bi-pills',
+            'icon' => 'bi bi-capsule',
+            'can'  => 'admin',
         ],
         [
             'text' => 'Batches',
             'url'  => '/batches',
-            'icon' => 'bi bi-inventory',
+            'icon' => 'bi bi-boxes',
+            'can'  => 'admin',
         ],
         [
             'type' => 'darkmode-widget',
