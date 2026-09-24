@@ -37,11 +37,14 @@ Route::middleware('guest')->group(function () {
 */
 Route::middleware(['auth', 'active'])->group(function () {
 
-    // Dashboard
-    Route::get('/', function () {
-        return view('dashboard');
-    })->name('dashboard');
-
+  Route::get('/', function () {
+    return view('dashboard', [
+        'totalCustomers'   => \App\Models\Customer::count(),
+        'totalMedicines'   => \App\Models\Medicine::count(),
+        'totalBatches'     => \App\Models\Batch::count(),
+        'totalManufacturers' => \App\Models\Manufacturer::count(),
+    ]);
+})->name('dashboard');
     /*
     |--------------------------------------------------------------------------
     | Customer routes
