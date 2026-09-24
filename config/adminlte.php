@@ -810,6 +810,11 @@ return [
             'can'  => 'admin',
         ],
         [
+            'text' => 'Sales',
+            'url'  => 'sales',
+            'icon' => 'bi bi-cart-check',
+        ],
+        [
             'type' => 'darkmode-widget',
             'topnav_right' => true,
         ],

@@ -7,6 +7,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ManufacturerController;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SaleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -106,6 +107,28 @@ Route::middleware(['auth', 'active'])->group(function () {
         Route::get('/batches/{batch}/edit', [BatchController::class, 'edit'])->name('batches.edit');
         Route::put('/batches/{batch}', [BatchController::class, 'update'])->name('batches.update');
         Route::delete('/batches/{batch}', [BatchController::class, 'destroy'])->name('batches.destroy');
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Sales
+    |--------------------------------------------------------------------------
+    | Sales are available to both admin and seller users.
+    | Editing/deleting is restricted inside the controller to admin users.
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
+    Route::get('/sales/create', [SaleController::class, 'create'])->name('sales.create');
+    Route::post('/sales', [SaleController::class, 'store'])->name('sales.store');
+    Route::get('/sales/customers/search', [SaleController::class, 'searchCustomers'])->name('sales.customers.search');
+    Route::get('/sales/medicines/search', [SaleController::class, 'searchMedicines'])->name('sales.medicines.search');
+    Route::get('/sales/medicines/{medicine}/batches', [SaleController::class, 'batches'])->name('sales.medicines.batches');
+    Route::get('/sales/{sale}', [SaleController::class, 'show'])->name('sales.show');
+
+    Route::middleware('admin')->group(function () {
+        Route::get('/sales/{sale}/edit', [SaleController::class, 'edit'])->name('sales.edit');
+        Route::put('/sales/{sale}', [SaleController::class, 'update'])->name('sales.update');
+        Route::delete('/sales/{sale}', [SaleController::class, 'destroy'])->name('sales.destroy');
     });
 
     /*
