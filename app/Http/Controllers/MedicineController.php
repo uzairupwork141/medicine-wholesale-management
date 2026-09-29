@@ -2,128 +2,70 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Medicine;
 use App\Models\Category;
 use App\Models\Manufacturer;
+use App\Models\Medicine;
+use Illuminate\Http\Request;
 
 class MedicineController extends Controller
 {
     public function index()
     {
-        $medicines = Medicine::with(['category', 'manufacturer'])->get();
-
+        $medicines = Medicine::with(['category','manufacturer'])->orderBy('name')->get();
         return view('medicines.index', compact('medicines'));
     }
 
     public function create()
     {
-        $categories = Category::all();
-        $manufacturers = Manufacturer::all();
-
-        return view('medicines.create', compact('categories', 'manufacturers'));
+        return view('medicines.create', ['categories'=>Category::orderBy('name')->get(), 'manufacturers'=>Manufacturer::orderBy('name')->get()]);
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'product_code' => 'required',
-            'barcode' => 'nullable',
-            'name' => 'required',
-            'generic_name' => 'nullable',
-            'category_id' => 'required',
-            'manufacturer_id' => 'required',
-            'dosage_form' => 'nullable',
-            'strength' => 'nullable',
-            'pack_size' => 'nullable',
-            'unit' => 'nullable',
-            'default_sale_price' => 'required|numeric',
-            'mrp' => 'required|numeric',
-            'reorder_level' => 'required|integer',
-            'is_active' => 'required',
-        ]);
-
-        Medicine::create([
-            'product_code' => $request->product_code,
-            'barcode' => $request->barcode,
-            'name' => $request->name,
-            'generic_name' => $request->generic_name,
-            'category_id' => $request->category_id,
-            'manufacturer_id' => $request->manufacturer_id,
-            'dosage_form' => $request->dosage_form,
-            'strength' => $request->strength,
-            'pack_size' => $request->pack_size,
-            'unit' => $request->unit,
-            'default_sale_price' => $request->default_sale_price,
-            'mrp' => $request->mrp,
-            'reorder_level' => $request->reorder_level,
-            'is_active' => $request->is_active,
-        ]);
-
-        return redirect()->route('medicines.index');
+        $data = $this->validated($request);
+        $data['is_active'] = $request->boolean('is_active');
+        Medicine::create($data);
+        return redirect()->route('medicines.index')->with('success','Medicine created successfully.');
     }
 
     public function edit($id)
     {
         $medicine = Medicine::findOrFail($id);
-
-        $categories = Category::all();
-        $manufacturers = Manufacturer::all();
-
-        return view('medicines.create', compact(
-            'medicine',
-            'categories',
-            'manufacturers'
-        ));
+        return view('medicines.create', ['medicine'=>$medicine,'categories'=>Category::orderBy('name')->get(),'manufacturers'=>Manufacturer::orderBy('name')->get()]);
     }
 
     public function update(Request $request, $id)
     {
         $medicine = Medicine::findOrFail($id);
-
-        $request->validate([
-            'product_code' => 'required',
-            'barcode' => 'nullable',
-            'name' => 'required',
-            'generic_name' => 'nullable',
-            'category_id' => 'required',
-            'manufacturer_id' => 'required',
-            'dosage_form' => 'nullable',
-            'strength' => 'nullable',
-            'pack_size' => 'nullable',
-            'unit' => 'nullable',
-            'default_sale_price' => 'required|numeric',
-            'mrp' => 'required|numeric',
-            'reorder_level' => 'required|integer',
-            'is_active' => 'required',
-        ]);
-
-        $medicine->product_code = $request->product_code;
-        $medicine->barcode = $request->barcode;
-        $medicine->name = $request->name;
-        $medicine->generic_name = $request->generic_name;
-        $medicine->category_id = $request->category_id;
-        $medicine->manufacturer_id = $request->manufacturer_id;
-        $medicine->dosage_form = $request->dosage_form;
-        $medicine->strength = $request->strength;
-        $medicine->pack_size = $request->pack_size;
-        $medicine->unit = $request->unit;
-        $medicine->default_sale_price = $request->default_sale_price;
-        $medicine->mrp = $request->mrp;
-        $medicine->reorder_level = $request->reorder_level;
-        $medicine->is_active = $request->is_active;
-
-        $medicine->save();
-
-        return redirect()->route('medicines.index');
+        $data = $this->validated($request, $medicine->id);
+        $data['is_active'] = $request->boolean('is_active');
+        $medicine->update($data);
+        return redirect()->route('medicines.index')->with('success','Medicine updated successfully.');
     }
 
     public function destroy($id)
     {
         $medicine = Medicine::findOrFail($id);
-
+        if ($medicine->batches()->exists()) {
+            return back()->with('error','This medicine has batches and cannot be deleted. Deactivate it instead.');
+        }
         $medicine->delete();
+        return redirect()->route('medicines.index')->with('success','Medicine deleted.');
+    }
 
-        return redirect()->route('medicines.index');
+    private function validated(Request $request, ?int $ignoreId=null): array
+    {
+        return $request->validate([
+            'product_code'=>['required','string','max:50','unique:medicines,product_code'.($ignoreId ? ','.$ignoreId : '')],
+            'barcode'=>['nullable','string','max:100','unique:medicines,barcode'.($ignoreId ? ','.$ignoreId : '')],
+            'name'=>['required','string','max:150'],
+            'generic_name'=>['nullable','string','max:150'],
+            'category_id'=>['required','integer','exists:categories,id'],
+            'manufacturer_id'=>['required','integer','exists:manufacturers,id'],
+            'dosage_form'=>['nullable','string','max:50'],
+            'strength'=>['nullable','string','max:100'],
+            'pack_size'=>['nullable','string','max:100'],
+            'unit'=>['nullable','string','max:50'],
+        ]);
     }
 }

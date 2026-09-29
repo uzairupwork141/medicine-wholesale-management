@@ -39,8 +39,6 @@
                     <th>Generic Name</th>
                     <th>Category</th>
                     <th>Manufacturer</th>
-                    <th>MRP</th>
-                    <th>Sale Price</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
@@ -67,10 +65,6 @@
                         <td>
                             {{ $medicine->manufacturer->name ?? 'N/A' }}
                         </td>
-
-                        <td>{{ $medicine->mrp }}</td>
-
-                        <td>{{ $medicine->default_sale_price }}</td>
 
                         <td>
                             @if($medicine->is_active)

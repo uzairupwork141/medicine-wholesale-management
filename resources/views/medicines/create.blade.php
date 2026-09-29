@@ -143,35 +143,6 @@
                            placeholder="Box / Bottle">
                 </div>
 
-                <div class="col-md-4 mb-3">
-                    <label>Default Sale Price</label>
-                    <input type="number"
-                           step="0.01"
-                           name="default_sale_price"
-                           class="form-control"
-                           value="{{ $medicine->default_sale_price ?? '' }}"
-                           placeholder="0.00">
-                </div>
-
-                <div class="col-md-4 mb-3">
-                    <label>MRP</label>
-                    <input type="number"
-                           step="0.01"
-                           name="mrp"
-                           class="form-control"
-                           value="{{ $medicine->mrp ?? '' }}"
-                           placeholder="0.00">
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <label>Reorder Level</label>
-                    <input type="number"
-                           name="reorder_level"
-                           class="form-control"
-                           value="{{ $medicine->reorder_level ?? '' }}"
-                           placeholder="Enter reorder level">
-                </div>
-
                 <div class="col-md-6 mb-3">
                     <label>Status</label>
 
