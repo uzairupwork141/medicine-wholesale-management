@@ -31,7 +31,7 @@
                        name="name"
                        class="form-control"
                        placeholder="Enter name"
-                       value="{{ old('name',$user->name ?? '') }}">
+                       value="{{ $user->name ?? '' }}">
             </div>
 
             <div class="form-group mb-3">
@@ -40,7 +40,7 @@
                        name="email"
                        class="form-control"
                        placeholder="Enter email"
-                       value="{{ old('email',$user->email ?? '') }}">
+                       value="{{ $user->email ?? '' }}">
             </div>
 
             <div class="form-group mb-3">
@@ -59,12 +59,12 @@
                     <option value="">Select Role</option>
 
                     <option value="admin"
-                        {{ old('role',$user->role ?? '') == 'admin' ? 'selected' : '' }}>
+                        {{ isset($user) && $user->role == 'admin' ? 'selected' : '' }}>
                         Admin
                     </option>
 
                     <option value="seller"
-                        {{ old('role',$user->role ?? '') == 'seller' ? 'selected' : '' }}>
+                        {{ isset($user) && $user->role == 'seller' ? 'selected' : '' }}>
                         Seller
                     </option>
 
@@ -77,12 +77,12 @@
                 <select name="is_active" class="form-control">
 
                     <option value="1"
-                        {{ old('is_active',$user->is_active ?? 1) == 1 ? 'selected' : '' }}>
+                        {{ isset($user) && $user->is_active == 1 ? 'selected' : '' }}>
                         Active
                     </option>
 
                     <option value="0"
-                        {{ old('is_active',$user->is_active ?? 1) == 0 ? 'selected' : '' }}>
+                        {{ isset($user) && $user->is_active == 0 ? 'selected' : '' }}>
                         Inactive
                     </option>
 

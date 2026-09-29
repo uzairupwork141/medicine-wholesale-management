@@ -9,20 +9,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Sale extends Model
 {
     protected $fillable = [
-        'invoice_no',
-        'customer_id',
-        'warehouse_id',
-        'salesman_id',
-        'sale_date',
-        'payment_status',
-        'subtotal',
-        'discount',
-        'invoice_discount',
-        'tax',
-        'grand_total',
-        'paid_amount',
-        'status',
-        'created_by',
+        'invoice_no', 'customer_id', 'sale_date', 'payment_status', 'subtotal',
+        'discount', 'invoice_discount', 'tax', 'grand_total', 'paid_amount',
+        'status', 'created_by',
     ];
 
     protected $casts = [
@@ -35,29 +24,13 @@ class Sale extends Model
         'paid_amount' => 'decimal:2',
     ];
 
-    public function customer(): BelongsTo
-    {
-        return $this->belongsTo(Customer::class);
-    }
-
-    public function creator(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'created_by');
-    }
-
-    // Keep $sale->user working in existing views.
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'created_by');
-    }
-
-    public function items(): HasMany
-    {
-        return $this->hasMany(SaleItem::class);
-    }
+    public function customer(): BelongsTo { return $this->belongsTo(Customer::class); }
+    public function user(): BelongsTo { return $this->belongsTo(User::class, 'created_by'); }
+    public function items(): HasMany { return $this->hasMany(SaleItem::class); }
+    public function allocations(): HasMany { return $this->hasMany(PaymentAllocation::class); }
 
     public function getDueAmountAttribute(): float
     {
-        return max(0, round((float) $this->grand_total - (float) $this->paid_amount, 2));
+        return max(0, round((float)$this->grand_total - (float)$this->paid_amount, 2));
     }
 }

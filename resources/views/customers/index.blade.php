@@ -34,8 +34,7 @@
                     <th>Business Name</th>
                     <th>Contact Person</th>
                     <th>Phone</th>
-                    <th>Credit Limit</th>
-                    <th>Status</th>
+                                        <th>Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -66,9 +65,6 @@
                             {{ $customer->phone }}
                         </td>
 
-                        <td>
-                            Rs. {{ number_format($customer->credit_limit, 2) }}
-                        </td>
 
                         <td>
 
@@ -121,7 +117,7 @@
                 @empty
 
                     <tr>
-                        <td colspan="8" class="text-center">
+                        <td colspan="7" class="text-center">
                             No customers found.
                         </td>
                     </tr>

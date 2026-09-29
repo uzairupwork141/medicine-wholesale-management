@@ -140,40 +140,6 @@
 
 
             <div class="form-group">
-                <label>Credit Limit</label>
-
-                <input
-                    type="number"
-                    step="0.01"
-                    name="credit_limit"
-                    class="form-control"
-                    value="{{ old('credit_limit', $customer->credit_limit) }}"
-                >
-
-                @error('credit_limit')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
-
-
-            <div class="form-group">
-                <label>Opening Balance</label>
-
-                <input
-                    type="number"
-                    step="0.01"
-                    name="opening_balance"
-                    class="form-control"
-                    value="{{ old('opening_balance', $customer->opening_balance) }}"
-                >
-
-                @error('opening_balance')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
-
-
-            <div class="form-group">
 
                 <div class="custom-control custom-switch">
 

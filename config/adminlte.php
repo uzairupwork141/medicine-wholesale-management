@@ -189,8 +189,8 @@ return [
     |
     */
 
-    'use_route_url' => true,
-    'dashboard_url' => 'dashboard',
+    'use_route_url' => false,
+    'dashboard_url' => 'home',
     'logout_url' => 'logout',
 
     // The HTTP method spoofed on the logout form. Set it to 'GET' when your
@@ -760,102 +760,29 @@ return [
     */
 
     'menu' => [
-        // Navbar items:
         [
             'type' => 'navbar-search',
             'text' => 'search',
             'topnav_right' => true,
         ],
-        [
-        'text' => 'Dashboard',
-        'url'  => 'dashboard',
-        'icon' => 'bi bi-speedometer2',
+        ['text'=>'Dashboard','url'=>'/','icon'=>'bi bi-speedometer2'],
+        ['text'=>'Users','url'=>'users','icon'=>'bi bi-people','can'=>'admin'],
+        ['text'=>'Customers','url'=>'/customers','icon'=>'bi bi-person-lines-fill'],
+        ['text'=>'Categories','url'=>'categories','icon'=>'bi bi-tags','can'=>'admin'],
+        ['text'=>'Companies','url'=>'manufacturers','icon'=>'bi bi-building','can'=>'admin'],
+        ['text'=>'Medicines','url'=>'medicines','icon'=>'bi bi-capsule','can'=>'admin'],
+        ['text'=>'Batches','url'=>'/batches','icon'=>'bi bi-boxes','can'=>'admin'],
+        ['text'=>'Sales','url'=>'sales','icon'=>'bi bi-cart-check'],
+        ['text'=>'Customer Payments','url'=>'sales/customer-balances','icon'=>'bi bi-cash-coin','can'=>'admin'],
+        ['text'=>'Reports','url'=>'reports','icon'=>'bi bi-bar-chart-line','can'=>'admin'],
+        ['text'=>'Customer Ledger','url'=>'ledger','icon'=>'bi bi-journal-text','can'=>'admin'],
+        ['type'=>'darkmode-widget','topnav_right'=>true],
+        ['type'=>'fullscreen-widget','topnav_right'=>true],
+        ['type'=>'sidebar-menu-search','text'=>'search'],
+        ['header'=>'account_settings'],
+        ['text'=>'My Profile','url'=>'profile','icon'=>'bi bi-person-circle'],
+        ['text'=>'Change Password','url'=>'profile/password','icon'=>'bi bi-shield-lock'],
     ],
-
-        [
-            'text' => 'Users',
-            'url'  => 'users',
-            'icon' => 'bi bi-people',
-            'can'  => 'admin',
-        ],
-        [
-            'text' => 'Customers',
-            'url' => '/customers',
-            'icon' => 'bi bi-people',
-        ],
-        [
-            'text' => 'Categories',
-            'url'  => 'categories',
-            'icon' => 'bi bi-tags',
-            'can'  => 'admin',
-        ],
-
-        [
-            'text' => 'Companies',
-            'url'  => 'manufacturers',
-            'icon' => 'bi bi-building',
-            'can'  => 'admin',
-        ],
-
-        [
-            'text' => 'Medicines',
-            'url'  => 'medicines',
-            'icon' => 'bi bi-capsule',
-            'can'  => 'admin',
-        ],
-        [
-            'text' => 'Batches',
-            'url'  => '/batches',
-            'icon' => 'bi bi-boxes',
-            'can'  => 'admin',
-        ],
-        [
-            'text' => 'Sales',
-            'url'  => 'sales',
-            'icon' => 'bi bi-cart-check',
-        ],
-        [
-            'type' => 'darkmode-widget',
-            'topnav_right' => true,
-        ],
-        [
-            'type' => 'fullscreen-widget',
-            'topnav_right' => true,
-        ],
-
-        // Sidebar items:
-        [
-            'type' => 'sidebar-menu-search',
-            'text' => 'search',
-        ],
-       
-        
-        ['header' => 'account_settings'],
-       [
-            'text' => 'My Profile',
-            'url'  => 'profile',
-            'icon' => 'bi bi-person-circle',
-        ],
-
-        [
-            'text' => 'Change Password',
-            'url'  => 'profile/password',
-            'icon' => 'bi bi-shield-lock',
-        ],
-       
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Menu Filters
-    |--------------------------------------------------------------------------
-    |
-    | Here we can modify the menu filters of the admin panel.
-    |
-    | For detailed instructions you can look the menu filters section here:
-    | https://jeroennoten.github.io/Laravel-AdminLTE/sections/configuration/menu.html
-    |
-    */
 
     'filters' => [
         JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class,

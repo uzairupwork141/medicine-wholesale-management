@@ -13,168 +13,65 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
         DB::transaction(function () {
-            $admin = User::create([
-                'name' => 'System Admin',
-                'email' => 'admin@example.com',
-                'password' => Hash::make('password'),
-                'role' => 'admin',
-                'is_active' => true,
-            ]);
+            $admin = User::create(['name'=>'System Admin','email'=>'admin@example.com','password'=>Hash::make('password'),'role'=>'admin','is_active'=>true]);
+            User::create(['name'=>'Sales User','email'=>'seller@example.com','password'=>Hash::make('password'),'role'=>'seller','is_active'=>true]);
 
-            $seller = User::create([
-                'name' => 'Main Seller',
-                'email' => 'seller@example.com',
-                'password' => Hash::make('password'),
-                'role' => 'seller',
-                'is_active' => true,
-            ]);
+            $cat1 = Category::create(['name'=>'Pain Relief','description'=>'Pain and fever medicines','is_active'=>true]);
+            $cat2 = Category::create(['name'=>'Antibiotics','description'=>'Prescription antibiotics','is_active'=>true]);
+            $cat3 = Category::create(['name'=>'Gastro','description'=>'Digestive medicines','is_active'=>true]);
 
-            $categories = [];
-            foreach ([
-                ['name' => 'Tablets', 'description' => 'Tablet medicines'],
-                ['name' => 'Capsules', 'description' => 'Capsule medicines'],
-                ['name' => 'Syrups', 'description' => 'Liquid oral medicines'],
-                ['name' => 'Injections', 'description' => 'Injectable medicines'],
-                ['name' => 'Creams', 'description' => 'Topical medicines'],
-            ] as $data) {
-                $categories[$data['name']] = Category::create($data + ['is_active' => true]);
-            }
+            $man1 = Manufacturer::create(['name'=>'Getz Pharma','phone'=>'0911111111','email'=>'info@getz.example','address'=>'Pakistan','is_active'=>true]);
+            $man2 = Manufacturer::create(['name'=>'Searle Pakistan','phone'=>'0922222222','email'=>'info@searle.example','address'=>'Pakistan','is_active'=>true]);
+            $man3 = Manufacturer::create(['name'=>'High-Q Pharma','phone'=>'0933333333','email'=>null,'address'=>'Pakistan','is_active'=>true]);
 
-            $manufacturers = [];
-            foreach ([
-                ['name' => 'Demo Pharma Ltd.', 'phone' => '0300-1111111', 'email' => 'info@demopharma.test', 'address' => 'Islamabad'],
-                ['name' => 'HealthCare Laboratories', 'phone' => '0300-2222222', 'email' => 'info@healthcare.test', 'address' => 'Lahore'],
-                ['name' => 'National Medicines Co.', 'phone' => '0300-3333333', 'email' => 'info@nationalmed.test', 'address' => 'Karachi'],
-            ] as $data) {
-                $manufacturers[$data['name']] = Manufacturer::create($data + ['is_active' => true]);
-            }
+            $m1 = Medicine::create(['product_code'=>'MED-001','barcode'=>'890100000001','name'=>'Paracetamol 500mg','generic_name'=>'Paracetamol','category_id'=>$cat1->id,'manufacturer_id'=>$man1->id,'dosage_form'=>'Tablet','strength'=>'500mg','pack_size'=>'20 tablets','unit'=>'Box','is_active'=>true]);
+            $m2 = Medicine::create(['product_code'=>'MED-002','barcode'=>'890100000002','name'=>'Amoxicillin 500mg','generic_name'=>'Amoxicillin','category_id'=>$cat2->id,'manufacturer_id'=>$man2->id,'dosage_form'=>'Capsule','strength'=>'500mg','pack_size'=>'20 capsules','unit'=>'Box','is_active'=>true]);
+            $m3 = Medicine::create(['product_code'=>'MED-003','barcode'=>'890100000003','name'=>'Omeprazole 20mg','generic_name'=>'Omeprazole','category_id'=>$cat3->id,'manufacturer_id'=>$man3->id,'dosage_form'=>'Capsule','strength'=>'20mg','pack_size'=>'14 capsules','unit'=>'Box','is_active'=>true]);
+            $m4 = Medicine::create(['product_code'=>'MED-004','barcode'=>'890100000004','name'=>'Ibuprofen 400mg','generic_name'=>'Ibuprofen','category_id'=>$cat1->id,'manufacturer_id'=>$man1->id,'dosage_form'=>'Tablet','strength'=>'400mg','pack_size'=>'20 tablets','unit'=>'Box','is_active'=>true]);
 
-            $medicineData = [
-                [
-                    'product_code' => 'MED-001', 'barcode' => '890100000001', 'name' => 'Panadol 500mg',
-                    'generic_name' => 'Paracetamol', 'category_id' => $categories['Tablets']->id,
-                    'manufacturer_id' => $manufacturers['Demo Pharma Ltd.']->id, 'dosage_form' => 'Tablet',
-                    'strength' => '500mg', 'pack_size' => '20 tablets', 'unit' => 'Pack',
-                    'default_sale_price' => 120, 'mrp' => 130, 'reorder_level' => 20, 'is_active' => true,
-                ],
-                [
-                    'product_code' => 'MED-002', 'barcode' => '890100000002', 'name' => 'Amoxil 500mg',
-                    'generic_name' => 'Amoxicillin', 'category_id' => $categories['Capsules']->id,
-                    'manufacturer_id' => $manufacturers['HealthCare Laboratories']->id, 'dosage_form' => 'Capsule',
-                    'strength' => '500mg', 'pack_size' => '10 capsules', 'unit' => 'Pack',
-                    'default_sale_price' => 220, 'mrp' => 240, 'reorder_level' => 15, 'is_active' => true,
-                ],
-                [
-                    'product_code' => 'MED-003', 'barcode' => '890100000003', 'name' => 'Brufen 400mg',
-                    'generic_name' => 'Ibuprofen', 'category_id' => $categories['Tablets']->id,
-                    'manufacturer_id' => $manufacturers['National Medicines Co.']->id, 'dosage_form' => 'Tablet',
-                    'strength' => '400mg', 'pack_size' => '20 tablets', 'unit' => 'Pack',
-                    'default_sale_price' => 180, 'mrp' => 200, 'reorder_level' => 20, 'is_active' => true,
-                ],
-                [
-                    'product_code' => 'MED-004', 'barcode' => '890100000004', 'name' => 'Calpol Syrup',
-                    'generic_name' => 'Paracetamol', 'category_id' => $categories['Syrups']->id,
-                    'manufacturer_id' => $manufacturers['Demo Pharma Ltd.']->id, 'dosage_form' => 'Syrup',
-                    'strength' => '120mg/5ml', 'pack_size' => '60ml', 'unit' => 'Bottle',
-                    'default_sale_price' => 95, 'mrp' => 110, 'reorder_level' => 10, 'is_active' => true,
-                ],
-                [
-                    'product_code' => 'MED-005', 'barcode' => '890100000005', 'name' => 'Diclofenac Injection',
-                    'generic_name' => 'Diclofenac Sodium', 'category_id' => $categories['Injections']->id,
-                    'manufacturer_id' => $manufacturers['National Medicines Co.']->id, 'dosage_form' => 'Injection',
-                    'strength' => '75mg/3ml', 'pack_size' => '5 ampoules', 'unit' => 'Box',
-                    'default_sale_price' => 260, 'mrp' => 290, 'reorder_level' => 10, 'is_active' => true,
-                ],
-                [
-                    'product_code' => 'MED-006', 'barcode' => '890100000006', 'name' => 'Clotrimazole Cream',
-                    'generic_name' => 'Clotrimazole', 'category_id' => $categories['Creams']->id,
-                    'manufacturer_id' => $manufacturers['HealthCare Laboratories']->id, 'dosage_form' => 'Cream',
-                    'strength' => '1%', 'pack_size' => '20g', 'unit' => 'Tube',
-                    'default_sale_price' => 150, 'mrp' => 170, 'reorder_level' => 10, 'is_active' => true,
-                ],
-            ];
+            $b1 = Batch::create(['medicine_id'=>$m1->id,'batch_no'=>'PCM-SEP26','manufacturing_date'=>'2026-01-10','expiry_date'=>'2028-01-10','purchase_price'=>80,'sale_price'=>100,'mrp'=>120,'quantity'=>500,'status'=>'Available']);
+            $b2 = Batch::create(['medicine_id'=>$m2->id,'batch_no'=>'AMX-SEP26','manufacturing_date'=>'2026-02-01','expiry_date'=>'2028-02-01','purchase_price'=>150,'sale_price'=>190,'mrp'=>220,'quantity'=>300,'status'=>'Available']);
+            $b3 = Batch::create(['medicine_id'=>$m3->id,'batch_no'=>'OMP-SEP26','manufacturing_date'=>'2026-03-05','expiry_date'=>'2028-03-05','purchase_price'=>90,'sale_price'=>120,'mrp'=>140,'quantity'=>300,'status'=>'Available']);
+            $b4 = Batch::create(['medicine_id'=>$m4->id,'batch_no'=>'IBU-SEP26','manufacturing_date'=>'2026-04-01','expiry_date'=>'2028-04-01','purchase_price'=>70,'sale_price'=>95,'mrp'=>110,'quantity'=>300,'status'=>'Available']);
 
-            $medicines = [];
-            foreach ($medicineData as $data) {
-                $medicines[$data['product_code']] = Medicine::create($data);
-            }
+            $c1 = Customer::create(['customer_code'=>'CUS-001','business_name'=>'ABC Medical Store','contact_person'=>'Ahmad Khan','phone'=>'03001234567','email'=>'abc@example.com','address'=>'Swabi','license_no'=>'LIC-001','is_active'=>true,'deleted'=>false]);
+            $c2 = Customer::create(['customer_code'=>'CUS-002','business_name'=>'City Pharmacy','contact_person'=>'Bilal Ahmad','phone'=>'03111234567','email'=>'city@example.com','address'=>'Mardan','license_no'=>'LIC-002','is_active'=>true,'deleted'=>false]);
+            Customer::create(['customer_code'=>'CUS-003','business_name'=>'Health Care Pharmacy','contact_person'=>'Usman Ali','phone'=>'03221234567','email'=>null,'address'=>'Peshawar','license_no'=>null,'is_active'=>true,'deleted'=>false]);
 
-            $batches = [];
-            foreach ([
-                ['code' => 'MED-001', 'batch_no' => 'PANA-2601', 'purchase_price' => 90, 'sale_price' => 120, 'mrp' => 130, 'quantity' => 100, 'expiry_date' => '2028-12-31'],
-                ['code' => 'MED-001', 'batch_no' => 'PANA-2602', 'purchase_price' => 92, 'sale_price' => 122, 'mrp' => 130, 'quantity' => 80, 'expiry_date' => '2029-06-30'],
-                ['code' => 'MED-002', 'batch_no' => 'AMOX-2601', 'purchase_price' => 170, 'sale_price' => 220, 'mrp' => 240, 'quantity' => 60, 'expiry_date' => '2028-10-31'],
-                ['code' => 'MED-003', 'batch_no' => 'BRUF-2601', 'purchase_price' => 135, 'sale_price' => 180, 'mrp' => 200, 'quantity' => 75, 'expiry_date' => '2028-08-31'],
-                ['code' => 'MED-004', 'batch_no' => 'CALP-2601', 'purchase_price' => 70, 'sale_price' => 95, 'mrp' => 110, 'quantity' => 50, 'expiry_date' => '2027-12-31'],
-                ['code' => 'MED-005', 'batch_no' => 'DICL-2601', 'purchase_price' => 200, 'sale_price' => 260, 'mrp' => 290, 'quantity' => 40, 'expiry_date' => '2027-11-30'],
-                ['code' => 'MED-006', 'batch_no' => 'CLOT-2601', 'purchase_price' => 110, 'sale_price' => 150, 'mrp' => 170, 'quantity' => 45, 'expiry_date' => '2028-05-31'],
-            ] as $data) {
-                $batches[$data['batch_no']] = Batch::create([
-                    'medicine_id' => $medicines[$data['code']]->id,
-                    'batch_no' => $data['batch_no'],
-                    'manufacturing_date' => '2026-01-15',
-                    'expiry_date' => $data['expiry_date'],
-                    'purchase_price' => $data['purchase_price'],
-                    'sale_price' => $data['sale_price'],
-                    'mrp' => $data['mrp'],
-                    'quantity' => $data['quantity'],
-                    'status' => 'Available',
+            $makeSale = function(Customer $customer, Batch $batch, float $total, float $paid, int $daysAgo=0, float $invoicePct=0, ?float $unitPrice=null) use ($admin) {
+                $unitPrice = $unitPrice ?? (float)$batch->sale_price;
+                $qty = (int)round($total / $unitPrice);
+                $gross = round($qty * $unitPrice, 2);
+                $grand = $gross;
+                $due = round($grand - $paid, 2);
+                $status = $due <= 0 ? 'Paid' : ($paid > 0 ? 'Partial' : 'Pending');
+                if ($qty > $batch->quantity) throw new \RuntimeException('Seed stock is insufficient.');
+                $batch->decrement('quantity',$qty);
+                $sale = Sale::create([
+                    'invoice_no'=>'SAL-'.now()->subDays($daysAgo)->format('Ymd').'-'.Str::upper(Str::random(6)),
+                    'customer_id'=>$customer->id,'sale_date'=>now()->subDays($daysAgo)->toDateString(),'payment_status'=>$status,
+                    'subtotal'=>$gross,'discount'=>0,'invoice_discount'=>$invoicePct,'tax'=>0,'grand_total'=>$grand,'paid_amount'=>$paid,
+                    'status'=>'Completed','created_by'=>$admin->id,
                 ]);
-            }
+                SaleItem::create(['sale_id'=>$sale->id,'medicine_id'=>$batch->medicine_id,'batch_id'=>$batch->id,'quantity'=>$qty,'unit_price'=>$unitPrice,'discount'=>0,'tax'=>0,'total'=>$gross]);
+            };
 
-            $customers = [];
-            foreach ([
-                ['customer_code' => 'CUS-001', 'business_name' => 'City Medical Store', 'contact_person' => 'Ahmed Khan', 'phone' => '0300-4444444', 'email' => 'city@example.com', 'address' => 'Swabi', 'license_no' => 'LIC-001', 'credit_limit' => 100000, 'opening_balance' => 0],
-                ['customer_code' => 'CUS-002', 'business_name' => 'Al-Shifa Pharmacy', 'contact_person' => 'Bilal Ahmad', 'phone' => '0300-5555555', 'email' => 'alshifa@example.com', 'address' => 'Mardan', 'license_no' => 'LIC-002', 'credit_limit' => 50000, 'opening_balance' => 0],
-                ['customer_code' => 'CUS-003', 'business_name' => 'Health Plus Medical', 'contact_person' => 'Usman Ali', 'phone' => '0300-6666666', 'email' => 'healthplus@example.com', 'address' => 'Peshawar', 'license_no' => 'LIC-003', 'credit_limit' => 75000, 'opening_balance' => 0],
-            ] as $data) {
-                $customers[$data['customer_code']] = Customer::create($data + ['is_active' => true, 'deleted' => false]);
-            }
+            // Five historical sales for one customer: three have a combined Rs. 5,000 outstanding balance.
+            $makeSale($c1,$b1,1000,1000,30);
+            $makeSale($c1,$b2,1500,1500,24);
+            $makeSale($c1,$b3,2000,0,18,0,100);
+            $makeSale($c1,$b4,2000,0,10,0,100);
+            $makeSale($c1,$b1,1000,0,3,0,100);
 
-            // One sample sale so the Sales module can be tested immediately.
-            $sampleBatch = $batches['PANA-2601'];
-            $quantity = 2;
-            $unitPrice = 120;
-            $lineDiscount = 0;
-            $subtotal = $quantity * $unitPrice;
-            $invoiceDiscountPercent = 10;
-            $invoiceDiscountAmount = round($subtotal * ($invoiceDiscountPercent / 100), 2);
-            $grandTotal = round($subtotal - $invoiceDiscountAmount, 2);
-            $paid = 100;
-
-            $sampleSale = Sale::create([
-                'invoice_no' => 'SAL-SEED-001',
-                'customer_id' => $customers['CUS-001']->id,
-                'sale_date' => now()->toDateString(),
-                'payment_status' => 'Partial',
-                'subtotal' => $subtotal,
-                'discount' => $lineDiscount + $invoiceDiscountAmount,
-                'invoice_discount' => $invoiceDiscountPercent,
-                'tax' => 0,
-                'grand_total' => $grandTotal,
-                'paid_amount' => $paid,
-                'status' => 'Completed',
-                'created_by' => $seller->id,
-            ]);
-
-            SaleItem::create([
-                'sale_id' => $sampleSale->id,
-                'medicine_id' => $sampleBatch->medicine_id,
-                'batch_id' => $sampleBatch->id,
-                'quantity' => $quantity,
-                'unit_price' => $unitPrice,
-                'discount' => $lineDiscount,
-                'tax' => 0,
-                'total' => $subtotal,
-            ]);
-
-            $sampleBatch->decrement('quantity', $quantity);
+            $makeSale($c2,$b2,1900,900,7);
+            $makeSale($c2,$b3,1200,1200,2);
         });
     }
 }

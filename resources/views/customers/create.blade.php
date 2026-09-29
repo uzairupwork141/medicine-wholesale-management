@@ -186,53 +186,6 @@
 
             </div>
 
-
-            {{-- Credit Limit --}}
-
-            <div class="form-group">
-                <label>Credit Limit</label>
-
-                <input
-                    type="number"
-                    step="0.01"
-                    name="credit_limit"
-                    class="form-control"
-                    placeholder="50000"
-                    value="{{ old('credit_limit', 0) }}"
-                >
-
-                @error('credit_limit')
-                    <span class="text-danger">
-                        {{ $message }}
-                    </span>
-                @enderror
-
-            </div>
-
-
-            {{-- Opening Balance --}}
-
-            <div class="form-group">
-                <label>Opening Balance</label>
-
-                <input
-                    type="number"
-                    step="0.01"
-                    name="opening_balance"
-                    class="form-control"
-                    placeholder="0"
-                    value="{{ old('opening_balance', 0) }}"
-                >
-
-                @error('opening_balance')
-                    <span class="text-danger">
-                        {{ $message }}
-                    </span>
-                @enderror
-
-            </div>
-
-
             {{-- Active --}}
 
             <div class="form-group">

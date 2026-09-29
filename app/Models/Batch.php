@@ -8,15 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Batch extends Model
 {
     protected $fillable = [
-        'medicine_id',
-        'batch_no',
-        'manufacturing_date',
-        'expiry_date',
-        'purchase_price',
-        'sale_price',
-        'mrp',
-        'quantity',
-        'status',
+        'medicine_id', 'batch_no', 'manufacturing_date', 'expiry_date',
+        'purchase_price', 'sale_price', 'mrp', 'quantity', 'status',
     ];
 
     protected $casts = [
@@ -27,8 +20,5 @@ class Batch extends Model
         'mrp' => 'decimal:2',
     ];
 
-    public function medicine(): BelongsTo
-    {
-        return $this->belongsTo(Medicine::class);
-    }
+    public function medicine(): BelongsTo { return $this->belongsTo(Medicine::class); }
 }

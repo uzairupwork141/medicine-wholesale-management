@@ -72,7 +72,7 @@
                                 <th style="min-width:260px">Batch</th>
                                 <th style="width:100px">Qty</th>
                                 <th style="width:140px">Sale Price</th>
-                                <th style="width:130px">Discount</th>
+                                <th style="width:130px">Discount %</th>
                                 <th style="width:140px">Total</th>
                                 <th></th>
                             </tr>
@@ -212,8 +212,8 @@
                            min="0" step="0.01" value="${data?.unit_price || 0}" ${data ? '' : 'disabled'}>
                 </td>
                 <td>
-                    <input type="number" name="items[${i}][discount]" class="form-control line-discount"
-                           min="0" step="0.01" value="${data?.line_discount || 0}" ${data ? '' : 'disabled'}>
+                    <input type="number" name="items[${i}][discount_percent]" class="form-control line-discount"
+                           min="0" max="100" step="0.01" value="${data?.discount_percent || 0}" ${data ? '' : 'disabled'}>
                 </td>
                 <td><input class="form-control line-total" readonly value="0.00"></td>
                 <td><button type="button" class="btn btn-sm btn-danger remove-row">×</button></td>
@@ -276,6 +276,7 @@
         d.disabled = false;
         q.max = option.dataset.qty;
         p.max = option.dataset.mrp;
+        d.max = 100;
 
         if (!p.value || p.value === '0') p.value = option.dataset.price;
         calculate();
@@ -342,8 +343,11 @@
 
     function lineDiscount() {
         let total = 0;
-        body.querySelectorAll('.line-discount').forEach(x => {
-            total += Math.max(0, +x.value || 0);
+        body.querySelectorAll('tr').forEach(row => {
+            const q = +(row.querySelector('.qty')?.value || 0);
+            const p = +(row.querySelector('.unit-price')?.value || 0);
+            const pct = Math.min(100, Math.max(0, +(row.querySelector('.line-discount')?.value || 0)));
+            total += q * p * (pct / 100);
         });
         return total;
     }
@@ -354,8 +358,9 @@
         body.querySelectorAll('tr').forEach(row => {
             const q = +(row.querySelector('.qty')?.value || 0);
             const p = +(row.querySelector('.unit-price')?.value || 0);
-            const d = +(row.querySelector('.line-discount')?.value || 0);
-            const total = Math.max(0, q * p - d);
+            const d = Math.min(100, Math.max(0, +(row.querySelector('.line-discount')?.value || 0)));
+            const discountAmount = q * p * (d / 100);
+            const total = Math.max(0, q * p - discountAmount);
 
             subtotal += q * p;
             row.querySelector('.line-total').value = total.toFixed(2);
@@ -432,7 +437,11 @@
                 'batch_no' => $item->batch?->batch_no,
                 'quantity' => $item->quantity,
                 'unit_price' => (float) $item->unit_price,
-                'line_discount' => (float) $item->discount,
+                'discount_percent' => (float) (($item->discount_percent ?? 0) > 0
+                    ? $item->discount_percent
+                    : (($item->quantity * $item->unit_price) > 0
+                        ? round(((float) $item->discount / ((float) $item->quantity * (float) $item->unit_price)) * 100, 2)
+                        : 0)),
             ];
         })->values()
     ) }};
